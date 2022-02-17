@@ -1,25 +1,138 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteUser, editUser } from "./state/action-creators/action";
 
-function App() {
+import "./App.css";
+
+const App = () => {
+  const [data, setData] = useState({});
+  const { usersData, isLoading } = useSelector((state) => state);
+
+  const dispatch = useDispatch();
+  console.log(usersData);
+  function handleEdit(e, data) {
+    e.preventDefault();
+    setData({ ...data });
+    console.log(data);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <>  
+      <div className="container">
+        {isLoading && <div className="loading">Data loading...</div>}
+        <h2> Users Data tables</h2>
+
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabIndex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  EDIT
+                </h5>
+
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div>
+                  {console.log(data)}
+                  {Object.keys(data).map((d) => {
+                    return (
+                      d !== "id" && (
+                        <input
+                          className="p-1 m-1"
+                          type="text"
+                          key={data[d]}
+                          defaultValue={data[d]}
+                          onBlur={(e) =>
+                            setData((prev) => ({
+                              ...prev,
+                              [d]: e.target.value,
+                            }))
+                          }
+                        />
+                      )
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => {
+                    dispatch(editUser(data));
+                  }}
+                >
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th className="p-2 m-2">Name</th>
+              <th className="p-2 m-2">Email Id</th>
+              <th className="p-2 m-2">Contact_No</th>
+              <th className="p-2 m-2">Edit</th>
+              <th className="p-2 m-2">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {usersData.map(({ name, id, email, phone }) => {
+              return (
+                <tr key={id}>
+                  <td className="p-2 m-2">{name}</td>
+                  <td className="p-2 m-2">{email}</td>
+                  <td className="p-2 m-2">{phone}</td>
+                  <td className="p-2 m-2">
+                    <button
+                      type="button"
+                      class="btn btn-primary p-1"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      onClick={(e) => handleEdit(e, { name, id, email, phone })}
+                    >
+                      edit
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-danger p-1"
+                      onClick={() => dispatch(deleteUser(id))}
+                    >
+                      delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
-}
+};
 
 export default App;
