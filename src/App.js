@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteUser, editUser } from "./state/action-creators/action";
+import { deleteUser, editUser, addUser } from "./state/action-creators/action";
 
 import "./App.css";
 
 const App = () => {
   const [data, setData] = useState({});
+  const [newUser, setNewUser] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  });
   const { usersData, isLoading } = useSelector((state) => state);
 
   const dispatch = useDispatch();
@@ -16,12 +21,106 @@ const App = () => {
     console.log(data);
   }
 
+  function handlenewUserData(e) {
+    e.preventDefault();
+    const val = e.target.value;
+    setNewUser({
+      ...newUser,
+      [e.target.name]: val,
+    });
+    console.log(newUser);
+  }
+
   return (
-    <>  
+    <>
       <div className="container">
         {isLoading && <div className="loading">Data loading...</div>}
         <h2> Users Data tables</h2>
-
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#newUserModal"
+        >
+          ADD New USER
+        </button>
+        <div
+          class="modal fade"
+          id="newUserModal"
+          tabIndex="-1"
+          aria-labelledby="newUserModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="newUserModalLabel">
+                  ADD New USER
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <input
+                    className="p-2 m-1"
+                    name="name"
+                    type="text"
+                   
+                    placeholder="Enter Name "
+                    value={newUser.name}
+                    onChange={(e) => handlenewUserData(e)}
+                  />
+                  <input
+                    className="p-2 m-1"
+                    name="email"
+                    type="text"
+                  
+                    placeholder="Enter Email Add."
+                    value={newUser.email}
+                    onChange={(e) => handlenewUserData(e)}
+                  />
+                  <input
+                    className="p-2 m-1"
+                    name="phone"
+                    type="text"
+                    placeholder="Enter Contact No."
+                    value={newUser.phone}
+                    onChange={(e) => handlenewUserData(e)}
+                  />
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#newUserModal"
+                  onClick={() => {
+                 
+                    const res = newUser;
+                    setNewUser({ name: "", email: "", phone: ""});
+                    dispatch(addUser(res));
+                  }}
+                >
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* edit modal */}
         <div
           class="modal fade"
           id="exampleModal"

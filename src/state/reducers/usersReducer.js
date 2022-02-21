@@ -1,5 +1,6 @@
 import USER from "../constants";
-import dataJSON from '../../data.json'
+import dataJSON from '../../data.json';
+import { v4 as uuidv4 } from 'uuid';
 const initalState = {
   usersData: dataJSON,
   isLoading: false,
@@ -34,6 +35,15 @@ const reducer = (state = initalState, action) => {
           return{
               ...state,
               usersData:state.usersData.filter(({id})=> id !== action.payload)
+          };
+      case USER.USER_ADD:
+         const val = uuidv4(); 
+         let  newUser = action.payload;
+         newUser.id = val;
+        state.usersData.unshift(newUser);
+          return{
+              ...state,
+              usersData:state.usersData,
           };
     default:
       return state;

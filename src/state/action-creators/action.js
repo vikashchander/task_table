@@ -1,6 +1,7 @@
 import USER from "../constants";
 import dataJSON from '../../data.json'
 
+
 export const requestUsers = (data) => async (dispatch) => {
   dispatch({
     type: USER.LOAD,
@@ -28,7 +29,12 @@ export const deleteUser = (index) =>(dispatch) => {
        payload: index
     })
  }
-
+ export const addUser = (data) =>(dispatch) => {
+  dispatch({
+     type: USER.USER_ADD,
+     payload: data
+  })
+}
  export const editUser = (data) =>(dispatch)=>{
    dispatch({
      type:USER.USER_EDIT,
