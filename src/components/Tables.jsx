@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteUser, editUser, addUser } from "../state/action-creators/action";
+import { editUser, addUser } from "../state/action-creators/action";
 import DelUser from "./DelUser";
+import EditUser from "./EditUser";
+import NewUser from "./NewUser";
+
 function Tables() {
   const [data, setData] = useState({});
   const [newUser, setNewUser] = useState({
@@ -13,11 +16,6 @@ function Tables() {
 
   const dispatch = useDispatch();
   console.log(usersData);
-  function handleEdit(e, data) {
-    e.preventDefault();
-    setData({ ...data });
-    console.log(data);
-  }
 
   function handlenewUserData(e) {
     e.preventDefault();
@@ -32,14 +30,7 @@ function Tables() {
     <div className="container">
       {isLoading && <div className="loading">Data loading...</div>}
       <h2> Users Data tables</h2>
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#newUserModal"
-      >
-        ADD New USER
-      </button>
+      <NewUser />
       <div
         class="modal fade"
         id="newUserModal"
@@ -199,18 +190,10 @@ function Tables() {
                 <td className="p-2 m-2">{email}</td>
                 <td className="p-2 m-2">{phone}</td>
                 <td className="p-2 m-2">
-                  <button
-                    type="button"
-                    class="btn btn-primary p-1"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                    onClick={(e) => handleEdit(e, { name, id, email, phone })}
-                  >
-                    edit
-                  </button>
+                  <EditUser user={{ name, id, email, phone }} edit={setData} />
                 </td>
                 <td>
-                 <DelUser id={id} />
+                  <DelUser id={id} />
                 </td>
               </tr>
             );
