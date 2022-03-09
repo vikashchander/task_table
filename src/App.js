@@ -1,14 +1,15 @@
 import React from "react";
-import Tables from "./components/Tables";
+import Header  from "./components/Header";
+import Footer from "./components/Footer";
+import SocialBoat from "./components/SocialBoat";
 
-import "./App.css";
 
 const App = () => {
- 
-
   return (
     <>
-      <Tables/>
+      <Header />
+       <SocialBoat/>
+      <Footer/>
     </>
   );
 };
