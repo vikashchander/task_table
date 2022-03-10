@@ -14,8 +14,8 @@ ReactDOM.render(
       <Provider store={store}>
         <Routes>
           <Route path="/" element={<App />} />
-          <Route path="todos" element={<Todos />} />
-          <Route path="tables" element={<Tables />} />
+          <Route path="/todos" element={<Todos />} />
+          <Route path="/tables" element={<Tables />} />
         </Routes>
       </Provider>
     </BrowserRouter>

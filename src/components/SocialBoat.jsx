@@ -11,7 +11,7 @@ function SocialBoat() {
   useEffect(() => {
     async function getResults() {
       try {
-        if (search.length > 0) {
+        if (search.trim().length > 0) {
           const response = await axios.get(
             `https://asia-south1-socialboat-dev.cloudfunctions.net/assignmentVideos/?q=${search}&numResults=10`
           );
